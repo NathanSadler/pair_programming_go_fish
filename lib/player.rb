@@ -31,7 +31,7 @@ class Player
     occurences.keys.select {|rank| occurences[rank] == 4}
   end
 
-  def lay_down_book
+  def lay_down_books
     book_ranks = find_book_ranks
     books = hand.select {|card| book_ranks.include?(card.rank)}
     self.score += books.length / 4
