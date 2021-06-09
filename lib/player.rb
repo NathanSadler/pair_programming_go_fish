@@ -1,8 +1,11 @@
 class Player
+  attr_reader :socket, :name, :in_game
   attr_accessor :hand, :score
-  def initialize
+  def initialize(socket=nil, name="Player Name")
     @hand = []
     @score = 0
+    @socket = socket
+    @name = name
   end
 
   def add_card_to_hand(card)
