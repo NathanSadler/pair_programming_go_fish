@@ -21,4 +21,17 @@ describe 'Card' do
       expect(test_card_b.description).to(eq("Queen of Hearts"))
     end
   end
+
+  context '==' do
+    let(:test_card) {Card.new(rank: "7", suit:"D")}
+    it("is true if the rank and suit are both equal") do
+      expect(test_card == Card.new(rank: "7", suit: "D")).to(eq(true))
+    end
+    it("is false if the ranks are different") do
+      expect(test_card == Card.new(rank: "6", suit: "D")).to(eq(false))
+    end
+    it("is false if the suits are different") do
+      expect(test_card == Card.new(rank: "7", suit: "C")).to(eq(false))
+    end
+  end
 end
