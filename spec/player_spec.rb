@@ -59,12 +59,14 @@ describe 'Player' do
     end
   end
 
-  # context('#lay_down_book') do
-  #   it("removes a book from the hand and increases the player's score") do
-  #     book = ["S", "D", "H", "C"].map {|suit| Card.new(rank: "7", suit: suit)}
-  #     player.add_card_to_hand(book)
-  #     player.lay_down_book
-  #     expect(player.score).to(eq(1))
-  #   end
-  # end
+  context('#lay_down_book') do
+    it("removes a book from the hand and increases the player's score") do
+      book = ["S", "D", "H", "C"].map {|suit| Card.new(rank: "7", suit: suit)}
+      player.add_card_to_hand(book)
+      player.add_card_to_hand(Card.new(rank: "4", suit: "S"))
+      player.lay_down_book
+      expect(player.hand).to(eq([Card.new(rank: "4", suit: "S")]))
+      expect(player.score).to(eq(1))
+    end
+  end
 end

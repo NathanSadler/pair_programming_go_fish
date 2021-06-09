@@ -1,6 +1,5 @@
 class Player
-  attr_reader :score
-  attr_accessor :hand
+  attr_accessor :hand, :score
   def initialize
     @hand = []
     @score = 0
@@ -33,6 +32,9 @@ class Player
   end
 
   def lay_down_book
-
+    book_ranks = find_book_ranks
+    books = hand.select {|card| book_ranks.include?(card.rank)}
+    self.score += books.length / 4
+    self.hand -= books
   end
 end
