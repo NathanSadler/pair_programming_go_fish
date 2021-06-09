@@ -13,4 +13,12 @@ class Deck
     end
     card_list
   end
+
+  def shuffle
+    cards.shuffle!
+  end
+
+  def draw_card
+    cards.shift
+  end
 end
