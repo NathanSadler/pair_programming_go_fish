@@ -6,7 +6,6 @@ class Player
     @score = 0
     @socket = socket
     @name = name
-    @in_game = false
   end
 
   def add_card_to_hand(card)
@@ -33,6 +32,13 @@ class Player
       occurences[card.rank] ? occurences[card.rank] += 1 : occurences[card.rank] = 1
     end
     occurences.keys.select {|rank| occurences[rank] == 4}
+  end
+
+  def get_user_input
+    sleep(0.1)
+    socket.read_nonblock(1000).chomp
+  rescue IO::WaitReadable
+    ""
   end
 
   def set_in_game(value)

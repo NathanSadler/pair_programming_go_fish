@@ -1,4 +1,5 @@
 require_relative '../lib/player'
+require 'socket'
 require 'pry'
 describe 'Player' do
   let(:player) {Player.new}
@@ -70,11 +71,19 @@ describe 'Player' do
     end
   end
 
-  context('#set_in_game') do
-    it("sets the value of the in_game variable") do
-      expect(player.in_game).to(eq(false))
-      player.set_in_game(true)
-      expect(player.in_game).to(eq(true))
+  context('#get_user_input') do
+    let!(:test_server) {TCPServer.new(3338)}
+    after(:each) do
+      test_server.close
+    end
+    it("gets input sent from a user and returns it") do
+      test_socket = TCPSocket.new('localhost',3338)
+      server_side_socket = test_server.accept_nonblock
+      test_socket.puts("This is a test")
+      test_player = Player.new(server_side_socket)
+      expect(test_player.get_user_input).to(eq("This is a test"))
+    rescue IO::WaitReadable
+      expect(false).to be true
     end
   end
 end

@@ -16,6 +16,7 @@ describe 'GoFishServer' do
       test_socket = TCPSocket.new('localhost', 3336)
       expect(server.clients.length).to(eq(0))
       expect(server.players.length).to(eq(0))
+      test_socket.close
     end
   end
 
