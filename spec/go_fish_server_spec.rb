@@ -20,5 +20,22 @@ describe 'GoFishServer' do
     end
   end
 
+  context('#create_game_if_needed') do
+    it("creates a new game if there isn't one available") do
+      server.waiting_game = nil
+      server.create_game_if_needed
+      expect(server.waiting_game.nil?).to(eq(false))
+    end
+    it("returns the game it creates") do
+      server.waiting_game = nil
+      created_game = server.create_game_if_needed
+      expect(server.waiting_game).to(eq(created_game))
+    end
+    it("doesn't create a game if there is an available one") do
+      should_be_nil = server.create_game_if_needed
+      expect(should_be_nil.nil?).to(eq(true))
+    end
+  end
+
 
 end
