@@ -6,7 +6,6 @@ describe 'GoFishClient' do
   let!(:test_server) {TCPServer.new(3337)}
 
   after(:each) do
-    #test_client.close
     test_server.close
   end
 
@@ -19,6 +18,16 @@ describe 'GoFishClient' do
       test_client.close
     rescue IO::WaitReadable
       expect(false).to be true
+    end
+  end
+
+  context '#provide_input' do
+    it("sends input to the server") do
+      test_client = GoFishClient.new(3337)
+      server_side_client = test_server.accept_nonblock
+      test_client.provide_input("Hello World")
+      expect(server_side_client.gets.chomp!).to(eq("Hello World"))
+      test_client.close
     end
   end
 end

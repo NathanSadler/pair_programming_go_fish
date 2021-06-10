@@ -34,7 +34,7 @@ class Player
     occurences.keys.select {|rank| occurences[rank] == 4}
   end
 
-  def get_user_input
+  def read_user_input
     sleep(0.1)
     socket.read_nonblock(1000).chomp
   rescue IO::WaitReadable

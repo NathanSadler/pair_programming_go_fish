@@ -14,4 +14,8 @@ class GoFishClient
   rescue IO::WaitReadable
     ""
   end
+
+  def provide_input(input)
+    socket.puts(input)
+  end
 end

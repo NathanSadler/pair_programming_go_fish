@@ -71,7 +71,7 @@ describe 'Player' do
     end
   end
 
-  context('#get_user_input') do
+  context('#read_user_input') do
     let!(:test_server) {TCPServer.new(3338)}
     after(:each) do
       test_server.close
@@ -81,7 +81,7 @@ describe 'Player' do
       server_side_socket = test_server.accept_nonblock
       test_socket.puts("This is a test")
       test_player = Player.new(server_side_socket)
-      expect(test_player.get_user_input).to(eq("This is a test"))
+      expect(test_player.read_user_input).to(eq("This is a test"))
     rescue IO::WaitReadable
       expect(false).to be true
     end
