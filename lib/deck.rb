@@ -21,4 +21,8 @@ class Deck
   def draw_card
     cards.shift
   end
+
+  def empty?
+    cards.empty?
+  end
 end

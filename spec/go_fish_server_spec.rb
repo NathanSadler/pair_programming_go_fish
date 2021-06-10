@@ -10,14 +10,14 @@ describe 'GoFishServer' do
   end
 
   context('#accept_client') do
-    it("creates a Player object from a client") do
+    it("accepts a client and creates a Player object from it") do
       server.accept_client
       expect(server.clients.empty?).to(eq(true))
       test_socket = TCPSocket.new('localhost', 3336)
       expect(server.clients.length).to(eq(0))
+      expect(server.players.length).to(eq(0))
     end
   end
 
-  #context('#create_players_from_clients')
 
 end

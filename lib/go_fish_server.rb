@@ -11,7 +11,9 @@ class GoFishServer
 
   # TODO: add create player part
   def accept_client
-    clients.push(server.accept_nonblock)
+    client = server.accept_nonblock
+    clients.push(client)
+    players.push(Player.new(client, "Player Name"))
   rescue IO::WaitReadable
     ""
   end

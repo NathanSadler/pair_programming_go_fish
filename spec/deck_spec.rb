@@ -23,7 +23,7 @@ describe 'Deck' do
     end
     let(:unmatched_card) {false}
     let(:second_deck) {Deck.new}
-    
+
     it("shuffles itself") do
       test_deck_suits = test_deck.cards.map(&:suit)
       test_deck_ranks = test_deck.cards.map(&:rank)
@@ -39,6 +39,16 @@ describe 'Deck' do
       drawn_card = rigged_deck.draw_card
       expect(drawn_card.suit != rigged_deck.cards[0].suit).to(eq(true))
       expect(drawn_card.rank != rigged_deck.cards[0].rank).to(eq(true))
+    end
+  end
+
+  context('.empty?') do
+    it("is true if the deck is empty") do
+      test_deck.cards.length.times {test_deck.draw_card}
+      expect(test_deck.empty?).to(eq(true))
+    end
+    it("is false if the deck isn't empty") do
+      expect(test_deck.empty?).to(eq(false))
     end
   end
 end
