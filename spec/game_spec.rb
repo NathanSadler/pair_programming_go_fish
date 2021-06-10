@@ -1,5 +1,6 @@
 require_relative '../lib/game'
 require_relative '../lib/deck'
+require_relative '../lib/player'
 
 describe 'Game' do
   let(:game) {Game.new}
@@ -30,6 +31,13 @@ describe 'Game' do
     end
     it("is false if the deck isn't empty") do
       expect(game.is_deck_empty?).to(eq(false))
+    end
+  end
+
+  context '#add_player' do
+    it("adds a player to the game") do
+      game.add_player(Player.new)
+      expect(game.players.length).to(eq(1))
     end
   end
 

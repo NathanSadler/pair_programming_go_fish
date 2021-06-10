@@ -41,10 +41,6 @@ class Player
     ""
   end
 
-  def set_in_game(value)
-    @in_game = value
-  end
-
   def lay_down_books
     book_ranks = find_book_ranks
     books = hand.select {|card| book_ranks.include?(card.rank)}

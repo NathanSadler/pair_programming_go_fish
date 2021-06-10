@@ -26,7 +26,7 @@ describe 'GoFishClient' do
       test_client = GoFishClient.new(3337)
       server_side_client = test_server.accept_nonblock
       test_client.provide_input("Hello World")
-      expect(server_side_client.gets.chomp!).to(eq("Hello World"))
+      expect(server_side_client.gets.chomp).to(eq("Hello World"))
       test_client.close
     end
   end

@@ -24,4 +24,8 @@ class Game
     deck.empty?
   end
 
+  def add_player(player_to_add)
+    players.push(player_to_add)
+  end
+
 end
