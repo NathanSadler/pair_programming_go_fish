@@ -28,4 +28,8 @@ class Game
     players.push(player_to_add)
   end
 
+  def send_message_to_player(player_index, message)
+    players[player_index].socket.puts(message)
+  end
+
 end
