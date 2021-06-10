@@ -32,4 +32,11 @@ class Game
     players[player_index].socket.puts(message)
   end
 
+  def deal_cards
+    players.length > 3 ? (card_deal_count = 5) : (card_deal_count = 7)
+    card_deal_count.times do
+      players.each {|player| player.add_card_to_hand(deck.draw_card)}
+    end
+  end
+
 end
