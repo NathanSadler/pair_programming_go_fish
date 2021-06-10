@@ -69,4 +69,12 @@ describe 'Player' do
       expect(player.score).to(eq(1))
     end
   end
+
+  context('#set_in_game') do
+    it("sets the value of the in_game variable") do
+      expect(player.in_game).to(eq(false))
+      player.set_in_game(true)
+      expect(player.in_game).to(eq(true))
+    end
+  end
 end
