@@ -1,4 +1,4 @@
-require 'deck'
+require_relative 'deck'
 
 class Game
   attr_reader :players
@@ -12,7 +12,7 @@ class Game
   end
 
   def play_game
-    print("Dealing Cards")
+    (0...players.length).each {|index| send_message_to_player(index, "Dealing Cards...")}
     # Deal cards to all players
     deal_cards
     # In a loop, let everyone take their turn(s)

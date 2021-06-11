@@ -1,5 +1,6 @@
 require_relative 'player'
 require_relative 'game'
+require_relative 'deck'
 require 'socket'
 
 class GoFishServer

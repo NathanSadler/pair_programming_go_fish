@@ -1,4 +1,7 @@
 require_relative 'go_fish_server'
+require_relative 'deck'
+
+
 # TODO: enable multiple games at once
 
 main_server = GoFishServer.new
@@ -16,11 +19,12 @@ while !ready_to_start
       waiting_players_since_last_check = players_in_waiting_game
       main_server.waiting_game.send_message_to_player(0, "A new player" +
       " has joined. Are you ready to begin the game?")
-      ready_to_start = (main_server.waiting_game.players[0].read_user_input == "yes")
+      ready_to_start = (main_server.waiting_game.players[0].read_user_input.chomp == "yes")
     else
       main_server.try_to_add_player_to_game
     end
   else
-    main_server.start_waiting_game
+    ready_to_start = true
   end
 end
+main_server.start_waiting_game
