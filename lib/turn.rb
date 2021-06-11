@@ -5,6 +5,15 @@ class Turn
     @game = game
   end
 
+  def select_other_player
+    game.send_message_to_player(game.players.index(player), "Enter a number " +
+  "to select a player")
+    list_other_players
+    player_input = player.read_user_input
+    returned_player = game.players[player_input.to_i]
+    !returned_player.nil? ? returned_player : "not a valid input"
+  end
+
   def list_other_players
     other_players = game.players.select {|other_player| other_player != player}
     counter, message = [1, ""]

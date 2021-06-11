@@ -1,6 +1,8 @@
 require_relative '../lib/turn'
 require_relative '../lib/go_fish_server'
 require_relative '../lib/go_fish_client'
+require 'pry'
+
 describe 'Turn' do
   context('#initialize') do
     it("creates a new Turn object using a Player and Game") do
@@ -31,9 +33,13 @@ describe 'Turn' do
       client_list[0].provide_input("1")
       turn = Turn.new(server.waiting_game.players[0], server.waiting_game)
       selected_player = turn.select_other_player
+      expect(selected_player).to(eq(server.waiting_game.players[1]))
     end
-    it("retries if the user doesn't give a valid response") do
-
+    it("returns an error message if the user doesn't give a valid response") do
+      client_list[0].provide_input("9999999999999999")
+      turn = Turn.new(server.waiting_game.players[0], server.waiting_game)
+      given_output = turn.select_other_player
+      expect(given_output.include?("not a valid input")).to(eq(true))
     end
   end
 
@@ -59,6 +65,7 @@ describe 'Turn' do
       user_output = client_list[1].capture_output
       expect(user_output.include?("1: Huey")).to(eq(true))
       expect(user_output.include?("2: Lebron")).to(eq(true))
+      #binding.pry
     end
   end
 end

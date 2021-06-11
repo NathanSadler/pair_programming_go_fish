@@ -95,4 +95,6 @@ describe 'Player' do
       expect(test_player.name).to(eq("FooBar"))
     end
   end
+
+
 end
