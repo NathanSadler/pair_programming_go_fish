@@ -11,6 +11,11 @@ class Game
     @books_made = 0
   end
 
+  # Returns the index of a given player in the players array
+  def get_player_index(player)
+    players.index(player)
+  end
+
   def play_game
     (0...players.length).each {|index| send_message_to_player(index, "Dealing Cards...")}
     # Deal cards to all players

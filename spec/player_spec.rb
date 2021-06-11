@@ -69,6 +69,16 @@ describe 'Player' do
     end
   end
 
+  context('#get_player_index') do
+    it('returns the index of a given player in the players array') do
+      test_game = Game.new
+      test_players = [Player.new(nil, 'Player 1'), Player.new(nil, 'Player 2')]
+      test_players.each {|test_player| test_game.add_player(test_player)}
+      expect(test_game.get_player_index(test_players[0])).to(eq(0))
+      expect(test_game.get_player_index(test_players[1])).to(eq(1))
+    end
+  end
+
   context('#remove_cards_with_rank') do
     it('returns and removes all cards with a specified rank') do
       cards = [Card.new(rank: "8", suit: "S"), Card.new(rank: "8", suit:"D"),
