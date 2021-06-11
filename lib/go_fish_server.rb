@@ -16,9 +16,8 @@ class GoFishServer
     client = server.accept_nonblock
     self.clients.push(client)
     self.players.push(Player.new(client, "Player Name"))
-    #binding.pry
   rescue IO::WaitReadable
-    retry
+    ""
   end
 
   def create_game_if_needed
