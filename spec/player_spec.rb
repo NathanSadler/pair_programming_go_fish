@@ -78,6 +78,12 @@ describe 'Player' do
       expect(player.hand).to(eq([Card.new(rank: "4", suit: "H")]))
       expect(removed_cards).to(eq([Card.new(rank: "8", suit: "S"), Card.new(rank: "8", suit:"D")]))
     end
+    it('returns an empty array if the player does not have cards of the '+
+    'specified ranks') do
+      cards = [Card.new(rank:"7", suit:"H"), Card.new(rank:"9", suit:"S")]
+      removed_cards = player.remove_cards_with_rank("2")
+      expect(removed_cards).to(eq([]))
+    end
   end
 
   context('#find_book_ranks') do
