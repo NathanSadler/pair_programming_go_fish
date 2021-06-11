@@ -1,3 +1,5 @@
+require_relative 'card'
+
 class Deck
   attr_reader :cards
   def initialize(specified_cards=Deck.default_deck)

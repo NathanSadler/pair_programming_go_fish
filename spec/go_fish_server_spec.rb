@@ -1,5 +1,6 @@
 require_relative '../lib/go_fish_server'
 require_relative '../lib/player'
+require_relative '../lib/deck'
 require 'socket'
 
 describe 'GoFishServer' do
@@ -11,9 +12,9 @@ describe 'GoFishServer' do
 
   context('#accept_client') do
     it("accepts a client and creates a Player object from it") do
+      test_socket = TCPSocket.new('localhost', 3336)
       server.accept_client
       expect(server.clients.empty?).to(eq(true))
-      test_socket = TCPSocket.new('localhost', 3336)
       expect(server.clients.length).to(eq(0))
       expect(server.players.length).to(eq(0))
       test_socket.close
@@ -37,5 +38,13 @@ describe 'GoFishServer' do
     end
   end
 
+  context('#create_player_from_client') do
+    it("creates a Player using a specified client") do
+      server_side_socket = TCPSocket.new('localhost', 3336)
+      server.accept_client
+      expect(server.players.length).to(eq(1))
+      server_side_socket.close
+    end
+  end
 
 end

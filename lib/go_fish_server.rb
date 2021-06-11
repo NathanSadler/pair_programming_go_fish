@@ -14,10 +14,11 @@ class GoFishServer
 
   def accept_client
     client = server.accept_nonblock
-    clients.push(client)
-    players.push(Player.new(client, "Player Name"))
+    self.clients.push(client)
+    self.players.push(Player.new(client, "Player Name"))
+    #binding.pry
   rescue IO::WaitReadable
-    ""
+    retry
   end
 
   def create_game_if_needed
@@ -29,6 +30,7 @@ class GoFishServer
   end
 
   def create_player_from_client(client)
+
     players.push(Player.new(client))
   end
 
