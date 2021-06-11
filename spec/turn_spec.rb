@@ -1,6 +1,7 @@
 require_relative '../lib/turn'
 require_relative '../lib/go_fish_server'
 require_relative '../lib/go_fish_client'
+require_relative '../lib/deck'
 require 'pry'
 
 describe 'Turn' do
@@ -46,6 +47,60 @@ describe 'Turn' do
       turn = Turn.new(server.waiting_game.players[0], server.waiting_game)
       given_output = turn.select_other_player
       expect(given_output.include?("not a valid input")).to(eq(true))
+    end
+  end
+
+  # context('#announce_obtaining_cards') do
+  #   before(:each) do
+  #     2.times do
+  #       test_server.accept_client
+  #       test_client_list.push(GoFishClient.new(3337, 'localhost'))
+  #       test_server.try_to_add_player_to_game
+  #     end
+  #   end
+  #   it("sends a message to a player obtaining a card containing what card they" +
+  #   " got and where they got it from") do
+  #     test_game = test_server.waiting_game
+  #     turn = Turn.new(test_game.players[0], test_game)
+  #     turn.announce_obtaining_cards(Card.new(rank:"7", suit:"D"), "the deck")
+  #     expect(test_client_list[0].capture_output).to(eq("Player Name got a 7 of Diamonds from the deck"))
+  #   end
+  # end
+
+  context('#draw_from_deck') do
+    before(:each) do
+      2.times do
+        test_server.accept_client
+        test_client_list.push(GoFishClient.new(3337, 'localhost'))
+        test_server.try_to_add_player_to_game
+      end
+    end
+    it("adds the card it draws to the player's hand") do
+      test_game = Game.new
+      test_player = Player.new
+      test_game.add_player(test_player)
+      test_game.deck = Deck.new([Card.new(rank:"7", suit:"H")])
+      turn = Turn.new(test_player, test_game)
+      turn.draw_from_deck
+      expect(test_player.hand).to(eq([Card.new(rank:"7", suit:"H")]))
+    end
+    it("is true if the rank of the card that got drawn was the same as what the"+
+    " user had asked for") do
+      test_game = Game.new
+      test_player = Player.new
+      test_game.add_player(test_player)
+      test_game.deck = Deck.new([Card.new(rank:"7", suit:"H")])
+      turn = Turn.new(test_player, test_game)
+      expect(turn.draw_from_deck("7")).to(eq(true))
+    end
+    it("is false if the rank of the card that got drawn was not the same as "+
+    "what the user had asked for") do
+      test_game = Game.new
+      test_player = Player.new
+      test_game.add_player(test_player)
+      test_game.deck = Deck.new([Card.new(rank:"7", suit:"H")])
+      turn = Turn.new(test_player, test_game)
+      expect(turn.draw_from_deck("200")).to(eq(false))
     end
   end
 

@@ -14,6 +14,7 @@ class Turn
     !returned_player.nil? ? returned_player : "not a valid input"
   end
 
+
   def list_other_players
     other_players = game.players.select {|other_player| other_player != player}
     counter, message = [1, ""]
@@ -22,5 +23,17 @@ class Turn
       counter += 1
     end
     player.send_message_to_user(message)
+  end
+
+  def draw_from_deck(expected_rank = "B")
+    drawn_card = game.deck.draw_card
+    player.add_card_to_hand(drawn_card)
+    return drawn_card.rank == expected_rank
+  end
+
+  # TODO: Crunch this down into 7 or fewer lines. I'm not gonna be able to
+  # get anywhere with this if I don't (temporarily) ignore this constraint
+  def take_turn
+    #
   end
 end
