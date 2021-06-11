@@ -97,7 +97,7 @@ describe 'Player' do
       test_client.close
       test_server.stop
     end
-    
+
     it("sends a message to the user") do
       test_server.accept_client
       test_message = "This is being sent from the player class"
@@ -114,5 +114,15 @@ describe 'Player' do
     end
   end
 
+  context('#describe_cards') do
+    it("returns a string containing a description of every card the player has") do
+      player.add_card_to_hand([Card.new(rank: "4", suit: "D"),
+        Card.new(rank:"5", suit:"S")])
+      description = player.describe_cards
+      expect(description.include?("4 of Diamonds")).to(eq(true))
+      expect(description.include?("5 of Spades")).to(eq(true))
+      expect(description.include?("10 of Hearts")).to(eq(false))
+    end
+  end
 
 end

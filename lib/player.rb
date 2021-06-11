@@ -52,4 +52,10 @@ class Player
   def set_user_name(new_name)
     @name = new_name
   end
+
+  def describe_cards
+    hand_description = ""
+    hand.each {|card| hand_description += card.description}
+    hand_description
+  end
 end

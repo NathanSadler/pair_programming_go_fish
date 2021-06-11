@@ -65,7 +65,6 @@ describe 'Turn' do
       user_output = client_list[1].capture_output
       expect(user_output.include?("1: Huey")).to(eq(true))
       expect(user_output.include?("2: Lebron")).to(eq(true))
-      #binding.pry
     end
   end
 end
