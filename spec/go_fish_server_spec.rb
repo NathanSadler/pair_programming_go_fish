@@ -38,12 +38,26 @@ describe 'GoFishServer' do
     end
   end
 
-  context('#create_player_from_client') do
-    it("creates a Player using a specified client") do
-      server_side_socket = TCPSocket.new('localhost', 3336)
+  context('#try_to_add_player_to_game') do
+    let!(:test_socket) {TCPSocket.new('localhost', 3336)}
+    after(:each) do
+      test_socket.close
+    end
+    it("adds a player to the waiting_game, if there are any players to add") do
       server.accept_client
+      server.try_to_add_player_to_game
+      expect(server.waiting_game.players.length).to(eq(1))
+      test_socket.close
+    end
+    it("only adds one player to a game at a time") do
+      server.accept_client
+      second_test_socket = TCPSocket.new('localhost', 3336)
+      server.accept_client
+      server.try_to_add_player_to_game
+      # This should be 1 because calling this should remove the player from the
+      # server's players array since it gets added to the game.
       expect(server.players.length).to(eq(1))
-      server_side_socket.close
+      second_test_socket.close
     end
   end
 

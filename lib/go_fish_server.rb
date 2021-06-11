@@ -15,7 +15,7 @@ class GoFishServer
   def accept_client
     client = server.accept_nonblock
     self.clients.push(client)
-    self.players.push(Player.new(client, "Player Name"))
+    create_player_from_client(client)
   rescue IO::WaitReadable
     ""
   end
@@ -28,9 +28,15 @@ class GoFishServer
     nil
   end
 
-  def create_player_from_client(client)
+  def create_player_from_client(client, name="Player Name")
+    self.players.push(Player.new(client, name))
+  end
 
-    players.push(Player.new(client))
+  def try_to_add_player_to_game
+    accept_client
+    if !players.empty?
+      self.waiting_game.add_player(self.players.shift)
+    end
   end
 
   def stop
