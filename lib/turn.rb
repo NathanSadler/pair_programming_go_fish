@@ -21,6 +21,6 @@ class Turn
       message += "#{counter}: #{listable_player.name}" + "\n"
       counter += 1
     end
-    game.send_message_to_player(game.players.index(player), message)
+    player.send_message_to_user(message)
   end
 end

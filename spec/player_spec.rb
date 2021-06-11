@@ -97,6 +97,7 @@ describe 'Player' do
       test_client.close
       test_server.stop
     end
+    
     it("sends a message to the user") do
       test_server.accept_client
       test_message = "This is being sent from the player class"
