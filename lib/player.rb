@@ -35,7 +35,6 @@ class Player
   end
 
   def read_user_input
-    sleep(0.1)
     socket.gets.chomp
   end
 

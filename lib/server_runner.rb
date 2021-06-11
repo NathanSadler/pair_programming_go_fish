@@ -1,9 +1,10 @@
-require_relative 'GoFishServer'
+require_relative 'go_fish_server'
 # TODO: enable multiple games at once
 
 main_server = GoFishServer.new
 
-# Waiting for the game to start
+# Waiting for the game to start. See the 'wait_to_start_game flowchart' to be
+# able to understand
 ready_to_start = false
 waiting_players_since_last_check = 1
 while !ready_to_start
@@ -15,7 +16,11 @@ while !ready_to_start
       waiting_players_since_last_check = players_in_waiting_game
       main_server.waiting_game.send_message_to_player(0, "A new player" +
       " has joined. Are you ready to begin the game?")
-      
+      ready_to_start = (main_server.waiting_game.players[0].read_user_input == "yes")
+    else
+      main_server.try_to_add_player_to_game
     end
+  else
+    main_server.start_waiting_game
   end
 end

@@ -10,10 +10,11 @@ class GoFishClient
   end
 
   def capture_output
+    sleep(0.1)
     socket.read_nonblock(1000).chomp!
   rescue IO::WaitReadable
-    #print("GoFishClient.capture_output failed, retrying...")
-    retry
+    ""
+    #retry
   end
 
   def provide_input(input)
