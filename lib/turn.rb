@@ -26,9 +26,11 @@ class Turn
   end
 
   def draw_from_deck(expected_rank = "B")
-    drawn_card = game.deck.draw_card
-    player.add_card_to_hand(drawn_card)
-    return drawn_card.rank == expected_rank
+    if !game.deck.empty?
+      drawn_card = game.deck.draw_card
+      player.add_card_to_hand(drawn_card)
+      return drawn_card.rank == expected_rank
+    end
   end
 
   # TODO: Crunch this down into 7 or fewer lines. I'm not gonna be able to

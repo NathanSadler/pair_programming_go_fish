@@ -102,6 +102,15 @@ describe 'Turn' do
       turn = Turn.new(test_player, test_game)
       expect(turn.draw_from_deck("200")).to(eq(false))
     end
+    it("doesn't do anything if there aren't any cards to draw") do
+      test_game = Game.new
+      2.times {test_game.add_player(Player.new)}
+      test_game.deck = Deck.new([])
+      turn = Turn.new(test_game.players[0], test_game)
+      turn.draw_from_deck
+      expect(test_game.players[0].hand).to(eq([]))
+      expect(test_game.players[1].hand).to(eq([]))
+    end
   end
 
   context('#list_other_players') do
