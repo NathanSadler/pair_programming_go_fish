@@ -36,9 +36,7 @@ class Player
 
   def read_user_input
     sleep(0.1)
-    socket.read.chomp
-  rescue IO::WaitReadable
-    ""
+    socket.gets.chomp
   end
 
   def lay_down_books
