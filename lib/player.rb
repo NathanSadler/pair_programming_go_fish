@@ -44,4 +44,8 @@ class Player
     self.score += books.length / 4
     self.hand -= books
   end
+
+  def set_user_name(new_name)
+    @name = new_name
+  end
 end

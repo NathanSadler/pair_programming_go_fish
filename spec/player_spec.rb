@@ -87,4 +87,12 @@ describe 'Player' do
       expect(false).to be true
     end
   end
+
+  context('#set_user_name') do
+    it("updates the name of the player") do
+      test_player = Player.new
+      test_player.set_user_name("FooBar")
+      expect(test_player.name).to(eq("FooBar"))
+    end
+  end
 end
