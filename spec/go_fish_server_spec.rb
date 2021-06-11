@@ -61,4 +61,12 @@ describe 'GoFishServer' do
     end
   end
 
+  context('#start_waiting_game') do
+    it("moves the ready game out of waiting_game and replaces it with a new game") do
+      ready_game = server.waiting_game
+      server.start_waiting_game
+      expect(ready_game == server.waiting_game).to(eq(false))
+    end
+  end
+
 end

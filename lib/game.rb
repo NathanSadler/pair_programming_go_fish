@@ -12,7 +12,9 @@ class Game
   end
 
   def play_game
+    print("Dealing Cards")
     # Deal cards to all players
+    deal_cards
     # In a loop, let everyone take their turn(s)
   end
 

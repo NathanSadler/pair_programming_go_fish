@@ -39,6 +39,14 @@ class GoFishServer
     end
   end
 
+  # TODO: make it so that a new waiting_game can be created while other
+  # games are being played
+  def start_waiting_game
+    ready_game = waiting_game
+    ready_game.play_game
+    self.waiting_game = Game.new
+  end
+
   def stop
     server.close
   end
