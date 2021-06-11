@@ -1,4 +1,5 @@
 require_relative '../lib/player'
+require_relative '../lib/card'
 require 'socket'
 require 'pry'
 describe 'Player' do
