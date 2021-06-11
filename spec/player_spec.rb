@@ -1,5 +1,7 @@
 require_relative '../lib/player'
 require_relative '../lib/card'
+require_relative '../lib/go_fish_server'
+
 require 'socket'
 require 'pry'
 describe 'Player' do
@@ -85,6 +87,21 @@ describe 'Player' do
       expect(test_player.read_user_input).to(eq("This is a test"))
     rescue IO::WaitReadable
       expect(false).to be true
+    end
+  end
+
+  context('#send_message_to_user') do
+    let!(:test_server) {GoFishServer.new}
+    let!(:test_client) {GoFishClient.new}
+    after(:each) do
+      test_client.close
+      test_server.stop
+    end
+    it("sends a message to the user") do
+      test_server.accept_client
+      test_message = "This is being sent from the player class"
+      test_server.players[0].send_message_to_user(test_message)
+      expect(test_client.capture_output.include?(test_message)).to(eq(true))
     end
   end
 
