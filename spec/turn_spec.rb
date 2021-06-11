@@ -4,6 +4,12 @@ require_relative '../lib/go_fish_client'
 require 'pry'
 
 describe 'Turn' do
+  let!(:test_server) {GoFishServer.new(3337)}
+  let!(:test_client_list) {[]}
+  after(:each) do
+    test_client_list.each {|client| client.close}
+    test_server.stop
+  end
   context('#initialize') do
     it("creates a new Turn object using a Player and Game") do
       test_player = Player.new

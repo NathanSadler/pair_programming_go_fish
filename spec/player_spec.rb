@@ -31,6 +31,32 @@ describe 'Player' do
     end
   end
 
+  context('#select_rank') do
+    let!(:test_server) {GoFishServer.new(3337)}
+    let!(:test_client_list) {[]}
+    before(:each) do
+      test_client_list.push(GoFishClient.new(3337))
+      test_server.accept_client
+      test_server.try_to_add_player_to_game
+    end
+    after(:each) do
+      test_client_list.each {|client| client.close}
+      test_server.stop
+    end
+    it("gets a rank from the player to ask for") do
+      test_server.waiting_game.players[0].add_card_to_hand(Card.new(rank:"7", suit:"H"))
+      test_client_list[0].provide_input("7")
+      selected_rank = test_server.waiting_game.players[0].select_rank
+      expect(selected_rank).to(eq("7"))
+    end
+    it("returns an error message if the user inputs a rank they don't have") do
+      test_server.waiting_game.players[0].add_card_to_hand(Card.new(rank:"7", suit:"H"))
+      test_client_list[0].provide_input("Q")
+      output = test_server.waiting_game.players[0].select_rank
+      expect(output).to(eq("not a valid input"))
+    end
+  end
+
   context('#has_card_with_rank?') do
     before(:each) do
       player.add_card_to_hand(Card.new(rank: "7", suit: "K"))

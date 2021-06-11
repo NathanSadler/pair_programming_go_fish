@@ -53,6 +53,16 @@ class Player
     @name = new_name
   end
 
+  def select_rank
+    send_message_to_user("Your cards are:\n #{describe_cards}\nEnter a rank to ask for")
+    user_input = read_user_input
+    if hand.map(&:rank).include?(user_input)
+      return user_input
+    else
+      return "not a valid input"
+    end
+  end
+
   def describe_cards
     hand_description = ""
     hand.each {|card| hand_description += card.description}
