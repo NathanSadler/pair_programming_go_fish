@@ -22,9 +22,11 @@ class Game
     # Deal cards to all players
     deal_cards
     # In a loop, let everyone take their turn(s)
-    while true
-      turn = Turn.new(players[0], self)
-      turn.take_turn
+    while self.books_made < 13
+      players.each do |player|
+        turn = Turn.new(player, self)
+        turn.take_turn
+      end
     end
   end
 
@@ -37,6 +39,9 @@ class Game
   end
 
   def add_player(player_to_add)
+    if(player_to_add.name == "Player Name")
+      player_to_add.set_user_name("Player #{players.length + 1}")
+    end
     players.push(player_to_add)
   end
 

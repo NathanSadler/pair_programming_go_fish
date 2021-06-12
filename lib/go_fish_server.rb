@@ -53,7 +53,7 @@ class GoFishServer
     print("1")
     thread = Thread.new {games[-1].play_game}
     print("2")
-    thread.join
+    #thread.join
     print("3")
   end
 

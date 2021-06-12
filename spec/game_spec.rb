@@ -40,6 +40,15 @@ describe 'Game' do
       game.add_player(Player.new)
       expect(game.players.length).to(eq(1))
     end
+    it("changes the player's name to <Player #x> if the player name is set to "+
+    "'Player Name'") do
+      game.add_player(Player.new)
+      expect(game.players[0].name).to(eq("Player 1"))
+    end
+    it("doesn't change the player name if it isn't 'Player Name'") do
+      game.add_player(Player.new(nil, "Not a default name"))
+      expect(game.players[0].name).to(eq("Not a default name"))
+    end
   end
 
   context '#send_message_to_player' do

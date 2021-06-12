@@ -19,6 +19,7 @@ class Turn
 
   # Adds cards to a player's hand and then Sends a message to all of the game's
   # players revealing what cards the player took and where they got it from.
+  ## TODO: make it so that the cards the player already has don't get mentioned
   def add_and_reaveal(cards, source="the deck")
     player.add_card_to_hand(cards)
     message = ""
