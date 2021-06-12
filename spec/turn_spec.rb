@@ -164,15 +164,24 @@ describe 'Turn' do
       selected_rank = player_1.select_rank
       test_client_list[0].provide_input("1")
       test_turn.try_getting_cards_from_player(selected_rank)
-      expect(player_1.hand.include?(Card.new(rank:"3", suit:"D"))).to(eq(true))
-      expect(player_1.hand.include?(Card.new(rank:"3", suit:"H"))).to(eq(true))
-      expect(player_1.hand.include?(Card.new(rank:"4", suit:"S"))).to(eq(true))
+      expect(player_1.has_card?(Card.new(rank:"3", suit:"D"))).to(eq(true))
+      expect(player_1.has_card?(Card.new(rank:"3", suit:"H"))).to(eq(true))
+      expect(player_1.has_card?(Card.new(rank:"4", suit:"S"))).to(eq(true))
     end
     it("doesn't give cards that don't match the rank that got asked for") do
-      test_client_list[1].provide_input("5")
-      selected_rank = player_2.select_rank
-      test_client_list[1].provide_input("1")
-      
+      test_client_list[0].provide_input("4")
+      selected_rank = player_1.select_rank
+      test_client_list[0].provide_input("1")
+      test_turn.try_getting_cards_from_player(selected_rank)
+      expect(player_1.hand.length).to(eq(2))
+    end
+    it("actually removes cards from the player being asked for cards if they "+
+    "have cards of the specified rank") do
+      test_client_list[0].provide_input("3")
+      selected_rank = player_1.select_rank
+      test_client_list[0].provide_input("1")
+      test_turn.try_getting_cards_from_player(selected_rank)
+      expect(player_2.hand).to(eq([Card.new(rank:"5", suit:"D")]))
     end
   end
 
