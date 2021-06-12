@@ -52,6 +52,10 @@ class Turn
     !returned_player.nil? ? returned_player : "not a valid input"
   end
 
+  def list_other_players
+    game.players.select {|other_player| other_player != player}
+  end
+
   def display_other_players
     other_players = game.players.select {|other_player| other_player != player}
     counter, message = [1, ""]

@@ -172,6 +172,19 @@ describe 'Turn' do
     end
   end
 
+  context('#list_other_players') do
+    let(:game) {Game.new}
+    let(:players) {players = ["A", "B", "C"].map {|name| Player.new(nil, name)}}
+    before(:each) do
+      players.each {|player| game.add_player(player)}
+    end
+    it("returns a list with every player in the game except for the player "+
+    "associated with the turn object") do
+      turn = Turn.new(players[1], game)
+      expect(turn.list_other_players).to(eq([players[0], players[2]]))
+    end
+  end
+
   context('#display_other_players') do
     let!(:server) {GoFishServer.new}
     let(:game) {Game.new}
