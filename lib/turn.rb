@@ -18,15 +18,20 @@ class Turn
   end
 
   # Lets the user ask for cards unitl they don't get a card with the rank
-  # they ask for
-  def ask_for_cards_until_go_fish
-    selected_rank = player.select_rank
-    turn_over = false
-    until turn_over
-      if !try_getting_cards_from_player
-        turn_over = false
+  # they ask for. Returns the last requested rank.
+  def ask_for_cards_until_go_fish_and_get_last_requested_rank
+    while true
+      selected_rank = player.select_rank
+      if !try_getting_cards_from_player(selected_rank)
+        return selected_rank
       end
     end
+  end
+
+  def add_card_without_revealing_details(card)
+    player.add_card_to_hand(card)
+    message = "#{player.name} drew a card from the center."
+    game.players.each {|player| player.send_message_to_user(message)}
   end
 
   # Adds cards to a player's hand and then Sends a message to all of the game's
@@ -65,18 +70,29 @@ class Turn
     player.send_message_to_user(message)
   end
 
+  # Adds a card to the player's hand. Announces it to other players, but doesn't
+  # show what card got added
+  def add_without_revealing(card)
+
+  end
+
   def draw_from_deck(expected_rank = "B")
     if !game.deck.empty?
       drawn_card = game.deck.draw_card
-      player.add_card_to_hand(drawn_card)
+      #drawn_card.rank == expected_rank ? add_and_reaveal(drawn_card) :
       return drawn_card.rank == expected_rank
     end
+    return false
   end
 
   # TODO: Crunch this down into 7 or fewer lines. I'm not gonna be able to
   # get anywhere with this if I don't (temporarily) ignore this constraint
   def take_turn
-    try_getting_cards_from_player
+    turn_over = false
+    until turn_over
+      last_rank = ask_for_cards_until_go_fish_and_get_last_requested_rank
+
+    end
     player.lay_down_books
   end
 end

@@ -2,7 +2,23 @@ require_relative '../lib/turn'
 require_relative '../lib/go_fish_server'
 require_relative '../lib/go_fish_client'
 require_relative '../lib/deck'
+require 'socket'
 require 'pry'
+
+def create_players_and_add_to_waiting_game(server, client_list)
+  client_list.push(GoFishClient.new(3337, 'localhost'))
+  server.accept_client
+  server.try_to_add_player_to_game
+end
+
+def server_and_client_shutdown(server, client_list)
+  client_list.each {|client| client.close}
+  if server.is_a?(TCPServer)
+    server.close
+  else
+    server.stop
+  end
+end
 
 describe 'Turn' do
   let!(:test_server) {GoFishServer.new(3337)}
@@ -11,6 +27,7 @@ describe 'Turn' do
     test_client_list.each {|client| client.close}
     test_server.stop
   end
+
   context('#initialize') do
     it("creates a new Turn object using a Player and Game") do
       test_player = Player.new
@@ -20,14 +37,15 @@ describe 'Turn' do
       expect(test_turn.game).to(eq(test_game))
     end
   end
+
   context('#select_other_player') do
     let!(:server) {GoFishServer.new}
     let(:game) {Game.new}
     let(:client_list) {[]}
     before(:each) do
       ["Huey", "Duey", "Lebron"].each do |name|
-        server.accept_client
         client_list.push(GoFishClient.new)
+        server.accept_client
         server.try_to_add_player_to_game
         server.waiting_game.players[-1].set_user_name(name)
       end
@@ -141,6 +159,27 @@ describe 'Turn' do
       turn.draw_from_deck
       expect(test_game.players[0].hand).to(eq([]))
       expect(test_game.players[1].hand).to(eq([]))
+    end
+  end
+
+  context('#add_card_without_revealing_details') do
+    before(:each) do
+      2.times {create_players_and_add_to_waiting_game(test_server, test_client_list)}
+    end
+    let!(:test_turn) {Turn.new(test_server.waiting_game.players[0], test_server.waiting_game)}
+    let!(:player_1) {test_server.waiting_game.players[0]}
+    let!(:player_2) {test_server.waiting_game.players[1]}
+    let!(:test_card) {Card.new(rank:"7",suit:"D")}
+    it("adds a single specified card to the player's hand") do
+      test_turn.add_card_without_revealing_details(test_card)
+      expect(player_1.has_card?(test_card)).to(eq(true))
+    end
+    it("sends a message that says a card got drawn from the center") do
+      test_turn.add_card_without_revealing_details(test_card)
+      test_client_list.each do |client|
+        expect(client.capture_output.include?("Player 1 drew a card from"+
+          " the center.")).to(eq(true))
+      end
     end
   end
 
