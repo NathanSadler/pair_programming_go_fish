@@ -1,9 +1,6 @@
 require_relative 'go_fish_server'
 require_relative 'deck'
 
-
-# TODO: enable multiple games at once
-
 main_server = GoFishServer.new
 
 # Waiting for the game to start. See the 'wait_to_start_game flowchart' to be

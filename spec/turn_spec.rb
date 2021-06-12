@@ -50,23 +50,6 @@ describe 'Turn' do
     end
   end
 
-  # context('#announce_obtaining_cards') do
-  #   before(:each) do
-  #     2.times do
-  #       test_server.accept_client
-  #       test_client_list.push(GoFishClient.new(3337, 'localhost'))
-  #       test_server.try_to_add_player_to_game
-  #     end
-  #   end
-  #   it("sends a message to a player obtaining a card containing what card they" +
-  #   " got and where they got it from") do
-  #     test_game = test_server.waiting_game
-  #     turn = Turn.new(test_game.players[0], test_game)
-  #     turn.announce_obtaining_cards(Card.new(rank:"7", suit:"D"), "the deck")
-  #     expect(test_client_list[0].capture_output).to(eq("Player Name got a 7 of Diamonds from the deck"))
-  #   end
-  # end
-
   context('#add_and_reaveal') do
     before(:each) do
       2.times do
