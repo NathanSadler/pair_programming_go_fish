@@ -6,17 +6,15 @@ class Turn
   end
 
   # Asks the user to select a player to get a card from and a rank to ask for
-  # calls draw_from_deck if the player doesn't get the card and calls
-  # reveal_and_add if it does
+  # calls add_and_reaveal and returns true if the player gets the card and calls
   def try_getting_cards_from_player
     selected_player, selected_rank = [select_other_player, player.select_rank]
     selected_player_id = game.get_player_index(player)
-    if game.players[selected_player_id].has_card_with_rank?(rank)
-      ## TODO: write add_and_reaveal
+    if game.players[selected_player_id].has_card_with_rank?(selected_rank)
       add_and_reaveal(game.players[selected_player_id].remove_cards_with_rank(selected_rank), selected_player.name)
-    else
-
+      return true
     end
+    return false
   end
 
   # Adds cards to a player's hand and then Sends a message to all of the game's
@@ -60,6 +58,6 @@ class Turn
   # TODO: Crunch this down into 7 or fewer lines. I'm not gonna be able to
   # get anywhere with this if I don't (temporarily) ignore this constraint
   def take_turn
-    #
+    try_getting_cards_from_player
   end
 end

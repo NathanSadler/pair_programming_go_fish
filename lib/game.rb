@@ -1,4 +1,5 @@
 require_relative 'deck'
+require_relative 'turn'
 
 class Game
   attr_reader :players
@@ -21,6 +22,10 @@ class Game
     # Deal cards to all players
     deal_cards
     # In a loop, let everyone take their turn(s)
+    while true
+      turn = Turn.new(players[0], self)
+      turn.take_turn
+    end
   end
 
   def increase_total_score(new_book_count)

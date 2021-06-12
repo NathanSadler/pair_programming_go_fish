@@ -20,6 +20,7 @@ while !ready_to_start
       main_server.waiting_game.send_message_to_player(0, "A new player" +
       " has joined. Are you ready to begin the game?")
       ready_to_start = (main_server.waiting_game.players[0].read_user_input.chomp == "yes")
+      print("OK")
     else
       main_server.try_to_add_player_to_game
     end

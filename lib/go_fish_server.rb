@@ -4,11 +4,12 @@ require_relative 'deck'
 require 'socket'
 
 class GoFishServer
-  attr_accessor :waiting_game
+  attr_accessor :waiting_game, :games
   attr_reader :server, :players, :clients
   def initialize(port=3336)
     @server = TCPServer.new(port)
     @clients = []
+    @games = []
     @players = []
     @waiting_game = Game.new
   end
@@ -43,9 +44,17 @@ class GoFishServer
   # TODO: make it so that a new waiting_game can be created while other
   # games are being played
   def start_waiting_game
-    ready_game = waiting_game
-    ready_game.play_game
+    # ready_game = waiting_game
+    #
+    # ready_game.play_game
+    # self.waiting_game = Game.new
+    games.push(waiting_game)
     self.waiting_game = Game.new
+    print("1")
+    thread = Thread.new {games[-1].play_game}
+    print("2")
+    thread.join
+    print("3")
   end
 
   def stop

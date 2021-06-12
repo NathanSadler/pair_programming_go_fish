@@ -2,6 +2,7 @@ require_relative '../lib/go_fish_server'
 require_relative '../lib/player'
 require_relative '../lib/deck'
 require 'socket'
+require 'pry'
 
 describe 'GoFishServer' do
   let!(:server) {GoFishServer.new}
@@ -62,10 +63,22 @@ describe 'GoFishServer' do
   end
 
   context('#start_waiting_game') do
+    let!(:test_client) {GoFishClient.new}
+    after(:each) do
+      test_client.close
+    end
     it("moves the ready game out of waiting_game and replaces it with a new game") do
+      print("A")
+      server.accept_client
+      print("B")
+      server.try_to_add_player_to_game
+      print("C")
       ready_game = server.waiting_game
+      print("D")
       server.start_waiting_game
+      #print("E")
       expect(ready_game == server.waiting_game).to(eq(false))
+      #print("F")
     end
   end
 

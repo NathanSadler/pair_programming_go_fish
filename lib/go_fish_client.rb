@@ -12,7 +12,7 @@ class GoFishClient
   def capture_output
     sleep(0.1)
     socket.read_nonblock(1000).chomp!
-  rescue IO::WaitReadable
+  rescue IO::WaitReadable, EOFError
     ""
     #retry
   end
