@@ -53,6 +53,10 @@ class Player
     @name = new_name
   end
 
+  def has_card?(card)
+    hand.include?(card)
+  end
+
   def select_rank
     send_message_to_user("Your cards are:\n #{describe_cards}\nEnter a rank to ask for")
     user_input = read_user_input

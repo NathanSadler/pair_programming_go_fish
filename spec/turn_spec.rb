@@ -158,7 +158,7 @@ describe 'Turn' do
     let!(:player_2) {test_server.waiting_game.players[1]}
     let!(:test_turn) {Turn.new(player_1, test_server.waiting_game)}
 
-    it("takes gives cards from a player to another player asking for cards if "+
+    it("gives cards of a given rank from a player to another player asking for cards if "+
     "the first player has cards of the rank the second is asking for") do
       test_client_list[0].provide_input("3")
       selected_rank = player_1.select_rank
@@ -166,9 +166,13 @@ describe 'Turn' do
       test_turn.try_getting_cards_from_player(selected_rank)
       expect(player_1.hand.include?(Card.new(rank:"3", suit:"D"))).to(eq(true))
       expect(player_1.hand.include?(Card.new(rank:"3", suit:"H"))).to(eq(true))
+      expect(player_1.hand.include?(Card.new(rank:"4", suit:"S"))).to(eq(true))
     end
-    it("doesn't take cards that don't match the rank that got asked for") do
-
+    it("doesn't give cards that don't match the rank that got asked for") do
+      test_client_list[1].provide_input("5")
+      selected_rank = player_2.select_rank
+      test_client_list[1].provide_input("1")
+      
     end
   end
 

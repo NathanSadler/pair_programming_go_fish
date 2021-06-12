@@ -167,4 +167,14 @@ describe 'Player' do
     end
   end
 
+  context('#has_card?') do
+    before(:each) {player.add_card_to_hand(Card.new(rank:"4", suit:"S"))}
+    it("is true if the player has the specified card in their hand") do
+      expect(player.has_card?(Card.new(rank:"4", suit:"S"))).to(eq(true))
+    end
+    it("is false if the player doesn't have the specified card in their hand") do
+      expect(player.has_card?(Card.new(rank:"5", suit:"S"))).to(eq(false))
+    end
+  end
+
 end
