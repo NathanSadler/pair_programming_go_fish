@@ -48,7 +48,7 @@ class Turn
   "to select a player")
     display_other_players
     player_input = player.read_user_input
-    returned_player = game.players[player_input.to_i]
+    returned_player = list_other_players[player_input.to_i - 1]
     !returned_player.nil? ? returned_player : "not a valid input"
   end
 
