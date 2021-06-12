@@ -42,6 +42,13 @@ describe 'Turn' do
       selected_player = turn.select_other_player
       expect(selected_player).to(eq(server.waiting_game.players[1]))
     end
+    it("works even works when the player the user selects comes before them in "+
+    "the player order") do
+      client_list[1].provide_input("1")
+      turn = Turn.new(server.waiting_game.players[1], server.waiting_game)
+      selected_player = turn.select_other_player
+      expect(selected_player).to(eq(server.waiting_game.players[0]))
+    end
     it("returns an error message if the user doesn't give a valid response") do
       client_list[0].provide_input("9999999999999999")
       turn = Turn.new(server.waiting_game.players[0], server.waiting_game)
@@ -137,7 +144,35 @@ describe 'Turn' do
     end
   end
 
-  context('#list_other_players') do
+  context('#try_getting_cards_from_player') do
+    before(:each) do
+      2.times do
+        test_client_list.push(GoFishClient.new(3337))
+        test_server.accept_client
+        test_server.try_to_add_player_to_game
+      end
+      test_server.waiting_game.players[0].add_card_to_hand([Card.new(rank:"3", suit:"S"), Card.new(rank:"4", suit:"S")])
+      test_server.waiting_game.players[1].add_card_to_hand([Card.new(rank:"3", suit:"D"), Card.new(rank:"3", suit:"H"), Card.new(rank:"5", suit:"D")])
+    end
+    let!(:player_1) {test_server.waiting_game.players[0]}
+    let!(:player_2) {test_server.waiting_game.players[1]}
+    let!(:test_turn) {Turn.new(player_1, test_server.waiting_game)}
+
+    it("takes gives cards from a player to another player asking for cards if "+
+    "the first player has cards of the rank the second is asking for") do
+      test_client_list[0].provide_input("3")
+      selected_rank = player_1.select_rank
+      test_client_list[0].provide_input("1")
+      test_turn.try_getting_cards_from_player(selected_rank)
+      expect(player_1.hand.include?(Card.new(rank:"3", suit:"D"))).to(eq(true))
+      expect(player_1.hand.include?(Card.new(rank:"3", suit:"H"))).to(eq(true))
+    end
+    it("doesn't take cards that don't match the rank that got asked for") do
+
+    end
+  end
+
+  context('#display_other_players') do
     let!(:server) {GoFishServer.new}
     let(:game) {Game.new}
     let(:client_list) {[]}
@@ -155,7 +190,7 @@ describe 'Turn' do
     end
     it("returns a list of all players except for the user seeing the list") do
       turn = Turn.new(server.waiting_game.players[1], server.waiting_game)
-      turn.list_other_players
+      turn.display_other_players
       user_output = client_list[1].capture_output
       expect(user_output.include?("1: Huey")).to(eq(true))
       expect(user_output.include?("2: Lebron")).to(eq(true))
