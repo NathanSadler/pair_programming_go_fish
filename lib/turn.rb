@@ -9,8 +9,7 @@ class Turn
   # calls add_and_reaveal and returns true if the player gets the card and calls
   def try_getting_cards_from_player(selected_rank)
     selected_player = select_other_player
-    selected_player_id = game.get_player_index(player)
-    #binding.pry
+    selected_player_id = game.get_player_index(selected_player)
     if game.players[selected_player_id].has_card_with_rank?(selected_rank)
       add_and_reaveal(game.players[selected_player_id].remove_cards_with_rank(selected_rank), selected_player.name)
       return true
