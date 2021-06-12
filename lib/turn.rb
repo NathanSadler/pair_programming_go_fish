@@ -7,16 +7,27 @@ class Turn
 
   # Asks the user to select a player to get a card from and a rank to ask for
   # calls draw_from_deck if the player doesn't get the card and calls
-  # take_and_reveal if it does
+  # reveal_and_add if it does
   def try_getting_cards_from_player
     selected_player, selected_rank = [select_other_player, player.select_rank]
-    selected_player_id = game.players.index(selected_player)
+    selected_player_id = game.get_player_index(player)
     if game.players[selected_player_id].has_card_with_rank?(rank)
-      ## TODO: write take_and_reaveal
-      take_and_reveal(game.players[selected_player_id].remove_cards_with_rank, selected_player.name)
+      ## TODO: write add_and_reaveal
+      add_and_reaveal(game.players[selected_player_id].remove_cards_with_rank(selected_rank), selected_player.name)
     else
 
     end
+  end
+
+  # Adds cards to a player's hand and then Sends a message to all of the game's
+  # players revealing what cards the player took and where they got it from.
+  def add_and_reaveal(cards, source="the deck")
+    player.add_card_to_hand(cards)
+    message = ""
+    if source.is_a?(Player) then display_source = source.name else display_source = source end
+    if cards.is_a?(Array) then cards.each {|card| message += "#{player.name} took #{card.description} from #{display_source}\n"} end
+    if !cards.is_a?(Array) then message = "#{player.name} took #{cards.description} from #{display_source}\n" end
+    game.players.each {|player| player.send_message_to_user(message)}
   end
 
   def select_other_player

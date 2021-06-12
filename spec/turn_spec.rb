@@ -67,6 +67,47 @@ describe 'Turn' do
   #   end
   # end
 
+  context('#add_and_reaveal') do
+    before(:each) do
+      2.times do
+        test_client_list.push(GoFishClient.new(3337))
+        test_server.accept_client
+        test_server.try_to_add_player_to_game
+      end
+      test_server.waiting_game.players[0].set_user_name("Roger")
+      test_server.waiting_game.players[1].set_user_name("Craig")
+    end
+    let(:cards) {[Card.new(rank:"8", suit:"D"), Card.new(rank:"8", suit:"S")]}
+    let(:test_turn) {Turn.new(test_server.waiting_game.players[0], test_server.waiting_game)}
+    it("adds specified cards to the player") do
+      test_turn.add_and_reaveal(cards, test_server.waiting_game.players[1])
+      expect(test_server.waiting_game.players[0].hand).to(eq(cards))
+    end
+    it("sends a message to all players about who got the cards and where the "+
+    "cards came from") do
+      announcement = "Roger took 8 of Diamonds from the deck"
+      test_turn.add_and_reaveal(cards[0], "the deck")
+      test_client_list.each do |client|
+        expect(client.capture_output).to(eq(announcement))
+      end
+    end
+    it("defaults to using 'the deck' as the source") do
+      announcement = "Roger took 8 of Diamonds from the deck"
+      test_turn.add_and_reaveal(cards[0])
+      test_client_list.each do |client|
+        expect(client.capture_output).to(eq(announcement))
+      end
+    end
+    it("uses the given player's name as the source if the source is a Player "+
+    "object") do
+      test_turn.add_and_reaveal(cards, test_turn.game.players[1])
+      expect(test_client_list[0].capture_output.include?("Roger took 8 of " +
+        "Diamonds from Craig")).to(eq(true))
+      expect(test_client_list[1].capture_output.include?("Roger took 8 of " +
+        "Spades from Craig"))
+    end
+  end
+
   context('#draw_from_deck') do
     before(:each) do
       2.times do
