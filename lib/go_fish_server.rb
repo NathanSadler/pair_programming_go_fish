@@ -56,6 +56,11 @@ class GoFishServer
     self.waiting_game = Game.new
   end
 
+  def start_last_ready_game
+    game_to_start = games[-1]
+    Thread.new {game_to_start.play_game}
+  end
+
   def stop
     server.close
   end
