@@ -11,7 +11,7 @@ class Turn
     selected_player = select_other_player
     selected_player_id = game.get_player_index(selected_player)
     if game.players[selected_player_id].has_card_with_rank?(selected_rank)
-      add_and_reaveal(game.players[selected_player_id].remove_cards_with_rank(selected_rank), selected_player.name)
+      add_and_reveal(game.players[selected_player_id].remove_cards_with_rank(selected_rank), selected_player.name)
       return true
     end
     return false
@@ -28,6 +28,8 @@ class Turn
     end
   end
 
+  # Adds a card to the player's hand. Announces it to other players, but doesn't
+  # show what card got added
   def add_card_without_revealing_details(card)
     player.add_card_to_hand(card)
     message = "#{player.name} drew a card from the center."
@@ -37,8 +39,7 @@ class Turn
   # Adds cards to a player's hand and then Sends a message to all of the game's
   # players revealing what cards the player took and where they got it from.
   ## TODO: make it so that the cards the player already has don't get mentioned
-  def add_and_reaveal(cards, source="the deck")
-    #print("AAAAA#{cards}AAAAA")
+  def add_and_reveal(cards, source="the deck")
     player.add_card_to_hand(cards)
     message = ""
     if source.is_a?(Player) then display_source = source.name else display_source = source end
@@ -70,16 +71,12 @@ class Turn
     player.send_message_to_user(message)
   end
 
-  # Adds a card to the player's hand. Announces it to other players, but doesn't
-  # show what card got added
-  def add_without_revealing(card)
 
-  end
 
   def draw_from_deck(expected_rank = "B")
     if !game.deck.empty?
       drawn_card = game.deck.draw_card
-      #drawn_card.rank == expected_rank ? add_and_reaveal(drawn_card) :
+      drawn_card.rank == expected_rank ? add_and_reveal(drawn_card) : add_card_without_revealing_details(drawn_card)
       return drawn_card.rank == expected_rank
     end
     return false

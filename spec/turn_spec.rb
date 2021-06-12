@@ -75,7 +75,7 @@ describe 'Turn' do
     end
   end
 
-  context('#add_and_reaveal') do
+  context('#add_and_reveal') do
     before(:each) do
       2.times do
         test_client_list.push(GoFishClient.new(3337))
@@ -88,27 +88,27 @@ describe 'Turn' do
     let(:cards) {[Card.new(rank:"8", suit:"D"), Card.new(rank:"8", suit:"S")]}
     let(:test_turn) {Turn.new(test_server.waiting_game.players[0], test_server.waiting_game)}
     it("adds specified cards to the player") do
-      test_turn.add_and_reaveal(cards, test_server.waiting_game.players[1])
+      test_turn.add_and_reveal(cards, test_server.waiting_game.players[1])
       expect(test_server.waiting_game.players[0].hand).to(eq(cards))
     end
     it("sends a message to all players about who got the cards and where the "+
     "cards came from") do
       announcement = "Roger took 8 of Diamonds from the deck"
-      test_turn.add_and_reaveal(cards[0], "the deck")
+      test_turn.add_and_reveal(cards[0], "the deck")
       test_client_list.each do |client|
         expect(client.capture_output).to(eq(announcement))
       end
     end
     it("defaults to using 'the deck' as the source") do
       announcement = "Roger took 8 of Diamonds from the deck"
-      test_turn.add_and_reaveal(cards[0])
+      test_turn.add_and_reveal(cards[0])
       test_client_list.each do |client|
         expect(client.capture_output).to(eq(announcement))
       end
     end
     it("uses the given player's name as the source if the source is a Player "+
     "object") do
-      test_turn.add_and_reaveal(cards, test_turn.game.players[1])
+      test_turn.add_and_reveal(cards, test_turn.game.players[1])
       expect(test_client_list[0].capture_output.include?("Roger took 8 of " +
         "Diamonds from Craig")).to(eq(true))
       expect(test_client_list[1].capture_output.include?("Roger took 8 of " +
@@ -124,9 +124,9 @@ describe 'Turn' do
         test_server.try_to_add_player_to_game
       end
     end
+    let!(:test_game) {test_server.waiting_game}
+    let!(:test_player) {test_server.waiting_game.players[0]}
     it("adds the card it draws to the player's hand") do
-      test_game = Game.new
-      test_player = Player.new
       test_game.add_player(test_player)
       test_game.deck = Deck.new([Card.new(rank:"7", suit:"H")])
       turn = Turn.new(test_player, test_game)
@@ -135,8 +135,6 @@ describe 'Turn' do
     end
     it("is true if the rank of the card that got drawn was the same as what the"+
     " user had asked for") do
-      test_game = Game.new
-      test_player = Player.new
       test_game.add_player(test_player)
       test_game.deck = Deck.new([Card.new(rank:"7", suit:"H")])
       turn = Turn.new(test_player, test_game)
@@ -144,16 +142,12 @@ describe 'Turn' do
     end
     it("is false if the rank of the card that got drawn was not the same as "+
     "what the user had asked for") do
-      test_game = Game.new
-      test_player = Player.new
       test_game.add_player(test_player)
       test_game.deck = Deck.new([Card.new(rank:"7", suit:"H")])
       turn = Turn.new(test_player, test_game)
       expect(turn.draw_from_deck("200")).to(eq(false))
     end
     it("doesn't do anything if there aren't any cards to draw") do
-      test_game = Game.new
-      2.times {test_game.add_player(Player.new)}
       test_game.deck = Deck.new([])
       turn = Turn.new(test_game.players[0], test_game)
       turn.draw_from_deck
