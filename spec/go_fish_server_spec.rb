@@ -62,23 +62,16 @@ describe 'GoFishServer' do
     end
   end
 
-  context('#start_waiting_game') do
+  context('#move_waiting_game') do
     let!(:test_client) {GoFishClient.new}
     after(:each) do
       test_client.close
     end
-    it("moves the ready game out of waiting_game and replaces it with a new game") do
-      print("A")
+    it("moves the game in waiting_game to games and replaces it with a new game") do
       server.accept_client
-      print("B")
       server.try_to_add_player_to_game
-      print("C")
-      ready_game = server.waiting_game
-      print("D")
-      server.start_waiting_game
-      #print("E")
-      expect(ready_game == server.waiting_game).to(eq(false))
-      #print("F")
+      server.move_waiting_game
+      expect(server.games[0] == server.waiting_game).to(eq(false))
     end
   end
 
