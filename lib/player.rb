@@ -64,8 +64,8 @@ class Player
   end
 
   def describe_cards
-    hand_description = ""
-    hand.each {|card| hand_description += card.description}
-    hand_description
+    description_array = hand.map {|card| "#{card.description}"}
+    description_array.sort!
+    description_array.join("\n")
   end
 end
